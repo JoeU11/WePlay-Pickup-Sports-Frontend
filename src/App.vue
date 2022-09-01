@@ -1,13 +1,13 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/events/new">Create an event</router-link> |
-    <router-link to="/signup">Register</router-link> |
-    <router-link to="/login">Sign in</router-link> |
-    <router-link to="/logout">Log out</router-link>
+    <router-link class="white" to="/">Home</router-link> |
+    <router-link class="white" to="/about">About</router-link> |
+    <router-link class="white" to="/events/new">Create an event</router-link> |
+    <router-link class="white" to="/signup">Register</router-link> |
+    <router-link class="white" to="/login">Sign in</router-link> |
+    <router-link class="white" to="/logout">Log out</router-link>
   </nav>
-  <div class="container">
+  <div class="container white" id="main">
     <router-view />
   </div>
 </template>
@@ -37,5 +37,28 @@ nav a.router-link-exact-active {
 #customH1 {
   margin-top: 15px;
   margin-bottom: 50px;
+  font-weight: bold;
+}
+
+#app {
+  font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
+  background-image: url("./assets/soccer-field.jpg");
+  background-size: cover
+}
+
+#main {
+  padding-bottom: 1000px;
+}
+
+.white {
+  color: azure;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.align-left {
+  text-align: left;
 }
 </style>
