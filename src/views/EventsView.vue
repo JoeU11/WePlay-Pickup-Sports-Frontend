@@ -41,8 +41,8 @@ export default {
     <div v-for="event in events">
       Date: {{ event.time }} <br />
       Sport: {{ event.sport.name }} <br />
-      Location: {{ event.location.name }} - {{ event.location.address }} <br />
-      <button v-on:click="signUp(event.id)">Sign up</button>
+      Location: {{ event.location.name }} - {{ event.location.address }} <br /> <br />
+      <button class="btn btn-info recolor bold" v-on:click="signUp(event.id)">Sign up</button>
       <hr />
     </div>
   </div>
@@ -57,4 +57,7 @@ export default {
 </template>
   
   <style>
+  .bold {
+    font-weight: bold;
+  }
   </style>

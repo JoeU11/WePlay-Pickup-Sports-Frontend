@@ -44,6 +44,7 @@ export default {
             <input type="email" v-model="newSessionParams.email" />
           </div>
         </div>
+        <br />
         <div class="row">
           <div class="col align-right">
             <label>Password:</label>

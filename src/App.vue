@@ -1,13 +1,13 @@
 <template>
   <nav>
-    <router-link class="white" to="/">Home</router-link> |
+    <router-link class="white" to="/pickup-events">Home</router-link> |
     <router-link class="white" to="/about">About</router-link> |
     <router-link class="white" to="/events/new">Create an event</router-link> |
     <router-link class="white" to="/signup">Register</router-link> |
     <router-link class="white" to="/login">Sign in</router-link> |
     <router-link class="white" to="/logout">Log out</router-link>
   </nav>
-  <div class="container white" id="main">
+  <div class="container white increase-size" id="main">
     <router-view />
   </div>
 </template>
@@ -60,5 +60,14 @@ nav a.router-link-exact-active {
 
 .align-left {
   text-align: left;
+}
+
+.increase-size {
+  font-size: 22px;
+}
+
+.recolor {
+  background-color: #42b983 !important;
+  border-color: black !important;
 }
 </style>

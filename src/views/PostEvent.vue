@@ -53,33 +53,43 @@ export default {
         <div class="col-5">
           <div id="eventcreate">
             <h2>Select a sport</h2>
-            <button v-on:click="sport = `soccer`; newEvent.sport_id = 1">soccer</button> |
-            <button v-on:click="sport = `tennis`; newEvent.sport_id = 2">tennis</button> |
-            <button v-on:click="sport = `basketball`; newEvent.sport_id = 3">basketball</button>
+            <h2>
+              <button class="btn btn-info recolor bold"
+                v-on:click="sport = `soccer`; newEvent.sport_id = 1">Soccer</button>|<button
+                class="btn btn-info recolor bold"
+                v-on:click="sport = `tennis`; newEvent.sport_id = 2">Tennis</button>|<button
+                class="btn btn-info recolor bold"
+                v-on:click="sport = `basketball`; newEvent.sport_id = 3">Basketball</button>
+            </h2>
           </div>
           <div id="eventcreate">
             <h2>Pick a time</h2>
-            <Datepicker v-model="newEvent.time" />
+            <Datepicker class="btn btn-secondary" v-model="newEvent.time" />
           </div>
           <div id="eventcreate">
             <h2>Add a location</h2>
-            <div id="leftalignselect" v-for="location in locations">
-              <button v-on:click="place = location.name; newEvent.location_id = location.id">select</button> {{
-                  location.name
-              }}
+            <div class="row" v-for="location in locations">
+              <div class="col align-right">
+                <button class="btn btn-info recolor bold"
+                  v-on:click="place = location.name; newEvent.location_id = location.id">select</button>
+              </div>
+              <div class="col align-left increase-size">
+                {{ location.name }}
+              </div>
+              <br /><br />
             </div>
           </div>
         </div>
         <div class="col">
-          <div>
-            <h3>Event preview:</h3>
+          <div class="increase-size">
+            <h2>Event preview:</h2>
             <p>
               Sport: {{ sport }} <br />
               Time: {{ newEvent.time }} <br />
               Location: {{ place }}
             </p>
           </div>
-          <button v-on:click="postEvent">Add Event</button>
+          <button class="btn btn-info recolor bold" v-on:click="postEvent">Add Event</button>
         </div>
       </div>
     </div>
@@ -101,10 +111,5 @@ export default {
 <style>
 #eventcreate {
   margin-bottom: 50px
-}
-
-#leftalignselect {
-  text-align: left;
-  margin-left: 150px;
 }
 </style>

@@ -42,6 +42,7 @@ export default {
             <input type="text" v-model="newUserParams.name" />
           </div>
         </div>
+        <br />
         <div class="row">
           <div class="col align-right">
             <label>Email:</label>
@@ -50,6 +51,7 @@ export default {
             <input type="email" v-model="newUserParams.email" />
           </div>
         </div>
+        <br />
         <div class="row">
           <div class="col align-right">
             <label>Password:</label>
@@ -58,6 +60,7 @@ export default {
             <input type="password" v-model="newUserParams.password" />
           </div>
         </div>
+        <br />
         <div class="row">
           <div class="col align-right">
             <label>Password confirmation:</label>
