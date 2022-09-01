@@ -7,7 +7,9 @@
     <router-link to="/login">Sign in</router-link> |
     <router-link to="/logout">Log out</router-link>
   </nav>
-  <router-view />
+  <div class="container">
+    <router-view />
+  </div>
 </template>
 
 <style>
@@ -30,5 +32,10 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+
+#customH1 {
+  margin-top: 15px;
+  margin-bottom: 50px;
 }
 </style>

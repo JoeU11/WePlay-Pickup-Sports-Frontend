@@ -37,7 +37,7 @@ export default {
   
   <template>
   <div class="home">
-    <h1>{{ message }}</h1>
+    <h1 id="customH1">{{ message }}</h1>
     <div v-for="event in events">
       Date: {{ event.time }} <br />
       Sport: {{ event.sport.name }} <br />

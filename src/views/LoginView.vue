@@ -31,7 +31,7 @@ export default {
 <template>
   <div class="login">
     <form v-on:submit.prevent="submit()">
-      <h1>Sign in</h1>
+      <h1 id="customH1">Sign in</h1>
       <ul>
         <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
       </ul>
