@@ -43,7 +43,9 @@ nav a.router-link-exact-active {
 #app {
   font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
   background-image: url("./assets/soccer-field.jpg");
-  background-size: cover
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 #main {
@@ -74,5 +76,6 @@ nav a.router-link-exact-active {
 #error {
   background-color: #241137;
   color: azure;
+
 }
 </style>
