@@ -42,7 +42,7 @@ nav a.router-link-exact-active {
 
 #app {
   font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
-  background-image: url("./assets/soccer-field.jpg");
+  background-image: url("./assets/soccer-field-final.jpeg");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;

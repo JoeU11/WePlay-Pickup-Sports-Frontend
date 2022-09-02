@@ -7,26 +7,17 @@ export default {
       message: "WePlay Pickup Sports",
       events: [],
       newParticipant: {},
-      errors: [],
-      eventParticipants: []
+      errors: []
     };
   },
   created: function () {
     this.getEvents();
-    this.getEventParticipants()
   },
   methods: {
     getEvents: function () {
       console.log("getting events")
       axios.get('http://localhost:3000/events.json').then(response => {
         this.events = response.data
-        console.log(response.data)
-      })
-    },
-    getEventParticipants: function () {
-      console.log("getting event participants data")
-      axios.get('/event_participants').then(response => {
-        this.eventParticipants = response.data
         console.log(response.data)
       })
     },
