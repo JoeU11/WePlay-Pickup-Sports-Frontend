@@ -48,10 +48,10 @@ export default {
   </div>
 
   <dialog id="error">
-    <form method="dialog">
+    <form class="white" method="dialog">
       Error:
       <p v-for="error in errors"> {{ error }} </p>
-      <button>OK</button>
+      <button class="btn btn-warning bold">OK</button>
     </form>
   </dialog>
 </template>

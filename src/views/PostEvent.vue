@@ -52,7 +52,7 @@ export default {
       <div class="row">
         <div class="col-5">
           <div id="eventcreate">
-            <h2>Select a sport</h2>
+            <h2>Select a Sport</h2>
             <h2>
               <button class="btn btn-info recolor bold"
                 v-on:click="sport = `soccer`; newEvent.sport_id = 1">Soccer</button>|<button
@@ -63,13 +63,13 @@ export default {
             </h2>
           </div>
           <div id="eventcreate">
-            <h2>Pick a time</h2>
+            <h2>Pick a Time</h2>
             <Datepicker class="btn btn-secondary" v-model="newEvent.time" />
           </div>
           <div id="eventcreate">
-            <h2>Add a location</h2>
+            <h2>Add a Location</h2>
             <div class="row" v-for="location in locations">
-              <div class="col align-right">
+              <div class="col-5 align-right">
                 <button class="btn btn-info recolor bold"
                   v-on:click="place = location.name; newEvent.location_id = location.id">select</button>
               </div>
@@ -82,7 +82,7 @@ export default {
         </div>
         <div class="col">
           <div class="increase-size">
-            <h2>Event preview:</h2>
+            <h2>Event Preview</h2>
             <p>
               Sport: {{ sport }} <br />
               Time: {{ newEvent.time }} <br />
@@ -102,7 +102,7 @@ export default {
     <form method="dialog">
       Error:
       <p v-for="error in errors"> {{ error }} </p>
-      <button>OK</button>
+      <button class="btn btn-warning bold">OK</button>
     </form>
   </dialog>
 </template>

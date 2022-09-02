@@ -1,8 +1,8 @@
 <template>
   <nav>
     <router-link class="white" to="/pickup-events">Home</router-link> |
-    <router-link class="white" to="/about">About</router-link> |
     <router-link class="white" to="/events/new">Create an event</router-link> |
+    <router-link class="white" to="/about">About</router-link> |
     <router-link class="white" to="/signup">Register</router-link> |
     <router-link class="white" to="/login">Sign in</router-link> |
     <router-link class="white" to="/logout">Log out</router-link>
@@ -69,5 +69,10 @@ nav a.router-link-exact-active {
 .recolor {
   background-color: #42b983 !important;
   border-color: black !important;
+}
+
+#error {
+  background-color: #241137;
+  color: azure;
 }
 </style>
