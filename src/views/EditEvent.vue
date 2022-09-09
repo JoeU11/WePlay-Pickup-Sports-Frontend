@@ -9,25 +9,26 @@ export default {
   },
   data: function () {
     return {
-      newEvent: {},
+      event: {},
       errors: [],
-      newEvent: { sport_id: 0, location_id: 0 },
       sport: "",
       locations: [],
-      place: ""
+      place: "",
+      sport: ""
     };
   },
   created: function () {
-    this.getLocations()
+    this.getLocations(),
+      this.getEvent()
   },
   methods: {
-    postEvent: function () {
+    updateEvent: function () {
       console.log("creating event")
       axios
-        .post("/events", this.newEvent)
+        .patch(`/events/${this.$route.params.id}`, this.event)
         .then((response) => {
           console.log(response.data);
-          this.$router.push("/");
+          this.$router.push(`/events/${this.event.id}`);
         })
         .catch((error) => {
           this.errors = error.response.data.errors
@@ -39,14 +40,36 @@ export default {
       axios.get("/locations").then(response => {
         this.locations = response.data
       })
+    },
+    getEvent: function () {
+      console.log("getting events")
+      axios.get(`http://localhost:3000/events/${this.$route.params.id}.json`).then(response => {
+        this.event = response.data
+        this.sport = response.data.sport.name
+        this.place = response.data.location.name
+        console.log(response.data)
+      })
+    },
+    showDelete: function () {
+      document.querySelector("#remove").showModal()
+    },
+    deleteEvent: function () {
+      console.log("deleting event")
+      axios.delete(`/events/${this.event.id}`).then(response => {
+        console.log(response.data)
+        this.$router.push("/pickup-events")
+      }).catch(error => {
+        this.errors = error.response.data
+        document.querySelector("#error").showModal()
+      })
     }
   },
 };
 </script>
-  
+    
 <template>
   <div class="newEvent">
-    <h1 id="customH1">New Event</h1>
+    <h1 id="customH1">Edit Event</h1>
 
     <div class="container text-center">
       <div class="row">
@@ -55,23 +78,23 @@ export default {
             <h2>Select a Sport</h2>
             <h2>
               <button class="btn btn-info recolor bold"
-                v-on:click="sport = `soccer`; newEvent.sport_id = 1">Soccer</button>|<button
+                v-on:click="sport = `soccer`; event.sport_id = 1">Soccer</button>|<button
                 class="btn btn-info recolor bold"
-                v-on:click="sport = `tennis`; newEvent.sport_id = 2">Tennis</button>|<button
+                v-on:click="sport = `tennis`; event.sport_id = 2">Tennis</button>|<button
                 class="btn btn-info recolor bold"
-                v-on:click="sport = `basketball`; newEvent.sport_id = 3">Basketball</button>
+                v-on:click="sport = `basketball`; event.sport_id = 3">Basketball</button>
             </h2>
           </div>
           <div id="eventcreate">
             <h2>Pick a Time</h2>
-            <Datepicker class="btn btn-secondary" v-model="newEvent.time" />
+            <Datepicker class="btn btn-secondary" v-model="event.time" />
           </div>
           <div id="eventcreate">
             <h2>Add a Location</h2>
             <div class="row" v-for="location in locations">
               <div class="col-5 align-right">
                 <button class="btn btn-info recolor bold"
-                  v-on:click="place = location.name; newEvent.location_id = location.id">select</button>
+                  v-on:click="place = location.name; event.location_id = location.id">select</button>
               </div>
               <div class="col align-left increase-size">
                 {{ location.name }} - {{location.address}}
@@ -85,17 +108,25 @@ export default {
             <h2>Event Preview</h2>
             <p>
               Sport: {{ sport }} <br />
-              Time: {{ newEvent.time }} <br />
+              Time: {{ event.time }} <br />
               Location: {{ place }}
             </p>
           </div>
-          <button class="btn btn-info recolor bold" v-on:click="postEvent">Add Event</button>
+          <button class="btn btn-info recolor bold" v-on:click="updateEvent">Update Event</button>
+          <br /><br />
+          <button class="btn btn-warning bold" v-on:click="showDelete">Delete Event</button>
         </div>
       </div>
     </div>
   </div>
 
-
+  <dialog id="remove">
+    <form method="dialog">
+      Are you sure? <br />
+      <button class="btn btn-secondary bold">No</button> ||
+      <button class="btn btn-warning bold" v-on:click="deleteEvent">Yes</button>
+    </form>
+  </dialog>
 
 
   <dialog id="error">
@@ -106,10 +137,16 @@ export default {
     </form>
   </dialog>
 </template>
-
-
+  
+  
 <style>
 #eventcreate {
   margin-bottom: 50px
+}
+
+#remove {
+  background-color: #241137;
+  color: azure;
+
 }
 </style>

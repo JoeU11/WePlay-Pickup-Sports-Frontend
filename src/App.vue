@@ -76,6 +76,5 @@ nav a.router-link-exact-active {
 #error {
   background-color: #241137;
   color: azure;
-
 }
 </style>
