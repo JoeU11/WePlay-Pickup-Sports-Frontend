@@ -14,7 +14,8 @@ export default {
       newEvent: { sport_id: 0, location_id: 0 },
       sport: "",
       locations: [],
-      place: ""
+      place: "",
+      newLocation: { name: "", address: "" }
     };
   },
   created: function () {
@@ -38,6 +39,17 @@ export default {
       console.log("getting locations")
       axios.get("/locations").then(response => {
         this.locations = response.data
+      })
+    },
+    showNewPlace: function () {
+      document.querySelector("#newPlace").showModal()
+    },
+    postLocation: function () {
+      console.log("adding place")
+      axios.post("locations", this.newLocation).then(response => {
+        this.newEvent.location_id = response.data.id
+        this.place = response.data.name
+        this.locations.push(response.data)
       })
     }
   },
@@ -75,9 +87,11 @@ export default {
               </div>
               <div class="col align-left increase-size">
                 {{ location.name }} - {{location.address}}
+                <!-- add limit on number of locations shown & modal to show all. can add search here too -->
               </div>
               <br /><br />
             </div>
+            <button class="btn btn-info recolor bold" v-on:click="showNewPlace">Add a location</button>
           </div>
         </div>
         <div class="col">
@@ -96,7 +110,17 @@ export default {
   </div>
 
 
-
+  <dialog id="newPlace">
+    <form method="dialog">
+      Add location: <br /> <br />
+      <div class="align-right">
+        Name: <input type="text" v-model="newLocation.name"><br />
+        Address: <input type="text" v-model="newLocation.address"><br /><br />
+      </div>
+      <button class="btn btn-info recolor bold" v-on:click="postLocation">Add</button> || <button
+        class="btn btn-secondary bold">Cancel</button>
+    </form>
+  </dialog>
 
   <dialog id="error">
     <form method="dialog">
@@ -111,5 +135,14 @@ export default {
 <style>
 #eventcreate {
   margin-bottom: 50px
+}
+
+.bold {
+  font-weight: bold;
+}
+
+#newPlace {
+  background-color: #241137;
+  color: azure;
 }
 </style>

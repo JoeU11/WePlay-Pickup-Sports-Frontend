@@ -147,6 +147,9 @@ export default {
 #remove {
   background-color: #241137;
   color: azure;
+}
 
+.bold {
+  font-weight: bold;
 }
 </style>
