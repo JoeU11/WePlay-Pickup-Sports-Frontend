@@ -51,6 +51,10 @@ export default {
         this.place = response.data.name
         this.locations.push(response.data)
       })
+    },
+    showAllLocations: function () {
+      console.log("showing all locations")
+      document.querySelector("#allLocations").showModal()
     }
   },
 };
@@ -80,18 +84,20 @@ export default {
           </div>
           <div id="eventcreate">
             <h2>Add a Location</h2>
-            <div class="row" v-for="location in locations">
-              <div class="col-5 align-right">
-                <button class="btn btn-info recolor bold"
-                  v-on:click="place = location.name; newEvent.location_id = location.id">select</button>
+            <template v-for="(location, index) in locations">
+              <div class="row" v-if="index < 4">
+                <div class="col-5 align-right">
+                  <button class="btn btn-info recolor bold"
+                    v-on:click="place = location.name; newEvent.location_id = location.id">select</button>
+                </div>
+                <div class="col align-left increase-size">
+                  {{ location.name }} - {{location.address}}
+                </div>
+                <br /><br />
               </div>
-              <div class="col align-left increase-size">
-                {{ location.name }} - {{location.address}}
-                <!-- add limit on number of locations shown & modal to show all. can add search here too -->
-              </div>
-              <br /><br />
-            </div>
-            <button class="btn btn-info recolor bold" v-on:click="showNewPlace">Add a location</button>
+            </template>
+            <button class="btn btn-info recolor bold" v-on:click="showNewPlace">Add a location</button> |
+            <button class="btn btn-info recolor bold" v-on:click="showAllLocations">Show all Locations</button>
           </div>
         </div>
         <div class="col">
@@ -109,10 +115,33 @@ export default {
     </div>
   </div>
 
+  <dialog id="allLocations">
+    <form method="dialog">
+      <div id="eventcreate">
+        <h2>All Locations</h2> <br />
+        <div class="list">
+          <br />
+          <div class="row" v-for="location in locations">
+            <div class="col-4">
+              <button class="btn btn-info recolor bold"
+                v-on:click="place = location.name; newEvent.location_id = location.id">select</button>
+            </div>
+            <div class="col-6 align-left increase-size">
+              {{ location.name }} - {{location.address}}
+            </div>
+            <br /><br />
+          </div>
+        </div>
+        <br />
+        <button class="btn btn-info recolor bold" v-on:click="showNewPlace">Add a location</button> |
+        <button class="btn btn-info recolor bold">Back</button>
+      </div>
+    </form>
+  </dialog>
 
   <dialog id="newPlace">
     <form method="dialog">
-      Add location: <br /> <br />
+      Add a Location: <br /> <br />
       <div class="align-right">
         Name: <input type="text" v-model="newLocation.name"><br />
         Address: <input type="text" v-model="newLocation.address"><br /><br />
@@ -144,5 +173,15 @@ export default {
 #newPlace {
   background-color: #241137;
   color: azure;
+}
+
+#allLocations {
+  background-color: #241137;
+  color: azure;
+}
+
+.list {
+  max-height: 600px;
+  overflow-y: auto;
 }
 </style>
