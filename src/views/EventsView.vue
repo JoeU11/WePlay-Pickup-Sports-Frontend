@@ -27,6 +27,7 @@ export default {
       axios.post(`http://localhost:3000/event_participants.json`, this.newParticipant).then(response => {
         console.log(this.newParticipant)
         this.events[index].attending = true
+        this.events[index].event_participant = {}
         this.events[index].event_participant.id = response.data.id
       }).catch(error => {
         this.errors = error.response.data
