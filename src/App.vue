@@ -1,11 +1,29 @@
+<script>
+export default {
+  data: function () {
+    return {
+      loggedIn: !!localStorage.jwt
+    }
+  },
+  watch: {
+    $route: function () {
+      this.loggedIn = !!localStorage.jwt
+    }
+  }
+}
+</script>
+
+
 <template>
   <nav>
     <router-link class="white" to="/pickup-events">Home</router-link> |
     <router-link class="white" to="/events/new">Create an event</router-link> |
     <router-link class="white" to="/about">About</router-link> |
-    <router-link class="white" to="/signup">Register</router-link> |
-    <router-link class="white" to="/login">Sign in</router-link> |
-    <router-link class="white" to="/logout">Log out</router-link>
+    <router-link class="white" to="/signup" v-if="!loggedIn">Register </router-link>
+    <small v-if="!loggedIn">| </small>
+    <router-link class="white" to="/login" v-if="!loggedIn">Sign in </router-link>
+    <small v-if="!loggedIn">| </small>
+    <router-link class="white" to="/logout" v-if="loggedIn">Log out</router-link>
   </nav>
   <div class="container white increase-size" id="main">
     <router-view />

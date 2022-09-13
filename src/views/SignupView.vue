@@ -71,7 +71,7 @@ export default {
         </div>
       </div>
       <br />
-      <input type="submit" value="Submit" />
+      <input class="btn btn-info recolor bold" type="submit" value="Submit" />
     </form>
   </div>
 </template>
