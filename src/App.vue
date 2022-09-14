@@ -19,6 +19,8 @@ export default {
     <router-link class="white" to="/pickup-events">Home</router-link> |
     <router-link class="white" to="/events/new">Create an event</router-link> |
     <router-link class="white" to="/about">About</router-link> |
+    <router-link class="white" to="/events/my-events" v-if="loggedIn">My Events</router-link>
+    <small v-if="loggedIn">| </small>
     <router-link class="white" to="/signup" v-if="!loggedIn">Register </router-link>
     <small v-if="!loggedIn">| </small>
     <router-link class="white" to="/login" v-if="!loggedIn">Sign in </router-link>

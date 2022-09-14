@@ -28,6 +28,7 @@ export default {
       axios.post(`http://localhost:3000/event_participants.json`, this.newParticipant).then(response => {
         console.log(this.newParticipant)
         this.event.attending = true
+        this.event.event_participant = {}
         this.event.event_participant.id = response.data.id
       }).catch(error => {
         this.errors = error.response.data
@@ -62,7 +63,7 @@ export default {
       <p class="bold">You're going! <br /> </p>
       <small>can't make it? -> <button class="btn btn-secondary transparent" v-on:click="deleteParticipant">unsign
           up</button></small> <br /><br />
-    </div>
+    </div> <br />
     <a v-if="event.edit_permission" v-bind:href="`/events/${event.id}/edit`">Edit Event</a>
   </div>
 
