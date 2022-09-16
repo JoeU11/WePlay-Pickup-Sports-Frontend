@@ -43,12 +43,17 @@ export default {
         this.errors = error.response.data
         document.querySelector("#error").showModal()
       })
+    },
+    requestOAuthPermission: function () {
+      console.log("redirecting to Google OAuth 2.0 server")
+
     }
   },
 };
 </script>
   
 <template>
+
   <div class="home">
     <h1 id="customH1">{{ message }}</h1>
     <div v-for="(event, index) in events">
