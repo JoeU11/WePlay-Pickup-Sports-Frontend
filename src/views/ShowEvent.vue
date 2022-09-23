@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios'
 
+
 export default {
   data: function () {
     return {
@@ -8,13 +9,79 @@ export default {
       event: {},
       newParticipant: {},
       errors: [],
-      participant: {}
+      participant: {},
+      clientID: process.env.VUE_APP_GOOGLE_CLIENTID,
+      apiKey: process.env.VUE_APP_GOOGLE_API,
+      client: {},
+      access_token: {}
+      // event: {
+      //   'summary': 'Testing Post event to Google Calendar API',
+      //   'location': '800 Howard St., San Francisco, CA 94103',
+      //   'description': 'A test of the google calendar api post route',
+      //   'start': {
+      //     'dateTime': '2022-09-28T09:00:00-07:00',
+      //     'timeZone': 'America/Los_Angeles'
+      //   },
+      //   'end': {
+      //     'dateTime': '2022-09-28T17:00:00-07:00',
+      //     'timeZone': 'America/Los_Angeles'
+      //   },
+      //   'recurrence': [
+      //     'RRULE:FREQ=DAILY;COUNT=2'
+      //   ],
+      //   'attendees': [
+      //     { 'email': 'lpage@example.com' },
+      //     { 'email': 'sbrin@example.com' }
+      //   ],
+      //   'reminders': {
+      //     'useDefault': false,
+      //     'overrides': [
+      //       { 'method': 'email', 'minutes': 24 * 60 },
+      //       { 'method': 'popup', 'minutes': 10 }
+      //     ]
+      //   }
+      // }
     };
   },
   created: function () {
     this.getEvent();
+    this.initClient();
   },
   methods: {
+    initClient: function () {
+      this.client = google.accounts.oauth2.initTokenClient({
+        client_id: this.clientID,
+        api_key: this.apiKey,
+        scope: 'https://www.googleapis.com/auth/calendar.events',
+        callback: (tokenResponse) => {
+          this.access_token = tokenResponse.access_token;
+          console.log(tokenResponse)
+        },
+      });
+    },
+    getToken: function () {
+      this.client.requestAccessToken()
+    },
+    getCalendar: function () {
+      console.log("getting calendar")
+      axios.get('https://www.googleapis.com/calendar/v3/calendars/primary/events/', { headers: { 'Authorization': `Bearer ${this.access_token}` } }).then(response => {
+        console.log(response)
+      }).catch(error => {
+        console.log(error.response.data.error)
+      })
+    },
+    addEventToCalendar: function () {
+      // axios.post('https://www.googleapis.com/calendar/v3/calendars/primary/events/', {
+      //   headers: { 'Authorization': `Bearer ${this.access_token}` }
+      // }).then(response => {
+      //   console.log(response)
+      // }).catch(error => {
+      //   console.log(error.response.data.error)
+      // })
+    },
+    revokeToken: function () {
+      google.accounts.oauth2.revoke(this.access_token, () => { console.log('access token revoked') });
+    },
     getEvent: function () {
       console.log("getting events")
       axios.get(`http://localhost:3000/events/${this.$route.params.id}.json`).then(response => {
@@ -65,7 +132,22 @@ export default {
           up</button></small> <br /><br />
     </div> <br />
     <a v-if="event.edit_permission" v-bind:href="`/events/${event.id}/edit`">Edit Event</a>
+
+
+
+
+    <!-- Start OAuth Testing -->
+    <button v-on:click="getToken">get token</button>
+    <button v-on:click="getCalendar">get calendar</button>
+    <button v-on:click='addEventToCalendar'>Add example event to calendar</button>
+    <button v-on:click="revokeToken">revoke token</button>
   </div>
+  <hr />
+  {{client}}
+  <hr />
+
+
+  <!-- End OAuth Testing -->
 
   <dialog id="error">
     <form class="white" method="dialog">
