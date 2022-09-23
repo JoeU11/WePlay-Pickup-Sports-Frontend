@@ -55,7 +55,6 @@ export default {
         scope: 'https://www.googleapis.com/auth/calendar.events',
         callback: (tokenResponse) => {
           this.access_token = tokenResponse.access_token;
-          console.log(tokenResponse)
         },
       });
     },
@@ -142,9 +141,6 @@ export default {
     <button v-on:click='addEventToCalendar'>Add example event to calendar</button>
     <button v-on:click="revokeToken">revoke token</button>
   </div>
-  <hr />
-  {{client}}
-  <hr />
 
 
   <!-- End OAuth Testing -->
