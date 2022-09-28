@@ -58,13 +58,20 @@ export default {
         callback: (tokenResponse) => {
           this.access_token = tokenResponse.access_token;
           // write acess token to local storage
+          localStorage.setItem("googleOAuthToken", tokenResponse.access_token);
           this.addEventToCalendar()
           this.onCalendar = true
         },
       });
     },
     getToken: function () {
-      this.client.requestAccessToken()
+      if (!localStorage.googleOAuthToken) {
+        this.client.requestAccessToken()
+      }
+      else {
+        this.access_token = localStorage.googleOAuthToken
+        this.addEventToCalendar()
+      }
     },
     getCalendar: function () {
       console.log("getting calendar")
@@ -85,6 +92,7 @@ export default {
     },
     revokeToken: function () {
       google.accounts.oauth2.revoke(this.access_token, () => { console.log('access token revoked') });
+      localStorage.removeItem("googleOAuthToken");
     },
     getEvent: function () {
       console.log("getting events")
@@ -139,7 +147,7 @@ export default {
       <small>can't make it? -> <button class="btn btn-secondary transparent" v-on:click="deleteParticipant">unsign
           up</button></small>
       <br /><br />
-      <!-- <button v-on:click="revokeToken">revoke token</button> -->
+      <button v-on:click="revokeToken">revoke token</button>
     </div> <br />
     <a v-if="event.edit_permission" v-bind:href="`/events/${event.id}/edit`">Edit Event</a>
   </div>
