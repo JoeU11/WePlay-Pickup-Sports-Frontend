@@ -13,9 +13,11 @@ export default {
       clientID: process.env.VUE_APP_GOOGLE_CLIENTID,
       apiKey: process.env.VUE_APP_GOOGLE_API,
       client: {},
-      access_token: {},
+      access_token: localStorage.googleOAuthToken,
       calendarEvent: {},
-      onCalendar: false
+      OAuthToken: !!localStorage.googleOAuthToken,
+      onCalendar: false,
+      readableTime: ""
       // testEvent: {
       //   'summary': 'Testing Post event to Google Calendar API',
       //   'location': '800 Howard St., San Francisco, CA 94103',
@@ -49,6 +51,9 @@ export default {
     this.getEvent();
     this.initClient();
   },
+  watch: {
+
+  },
   methods: {
     initClient: function () {
       this.client = google.accounts.oauth2.initTokenClient({
@@ -61,6 +66,7 @@ export default {
           localStorage.setItem("googleOAuthToken", tokenResponse.access_token);
           this.addEventToCalendar()
           this.onCalendar = true
+          this.OAuthToken = true
         },
       });
     },
@@ -69,7 +75,7 @@ export default {
         this.client.requestAccessToken()
       }
       else {
-        this.access_token = localStorage.googleOAuthToken
+        // this.access_token = localStorage.googleOAuthToken
         this.addEventToCalendar()
       }
     },
@@ -93,12 +99,26 @@ export default {
     revokeToken: function () {
       google.accounts.oauth2.revoke(this.access_token, () => { console.log('access token revoked') });
       localStorage.removeItem("googleOAuthToken");
+      this.OAuthToken = false
+    },
+    humanReadableTime: function (parsedTime) {
+      console.log(parsedTime[4].slice(0, -3).split(':')[0])
+      if (parsedTime[4].slice(0, -3).split(':')[0] > 12) {
+        this.readableTime = `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${parsedTime[4].slice(0, -3).split(':')[0] - 12}:${parsedTime[4].slice(0, -3).split(':')[1]} PM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
+      }
+      else if (parsedTime[4].slice(0, -3).split(':')[0] == 12) {
+        this.readableTime = `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${parsedTime[4].slice(0, -3)} PM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
+      }
+      else {
+        this.readableTime = `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${parsedTime[4].slice(0, -3).slice(1)} AM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
+      }
     },
     getEvent: function () {
       console.log("getting events")
       axios.get(`http://localhost:3000/events/${this.$route.params.id}.json`).then(response => {
         this.event = response.data
         console.log(response.data)
+        this.humanReadableTime(new Date(response.data.time).toString().split(' '))
         this.calendarEvent = { 'summary': `WePlay Pickup ${this.event.sport.name}`, 'location': this.event.location.address, 'description': 'Pickup sports activity scheduled through the WePlay App', 'start': { 'dateTime': this.event.start }, 'end': { 'dateTime': this.event.end } }
       })
     },
@@ -132,9 +152,9 @@ export default {
 <template>
   <div class="home">
     <h1 id="customH1">{{ message }}</h1>
-    Date: {{ event.time }} <br />
-    Sport: {{ event.sport.name }} <br />
-    Location: {{ event.location.name }} - {{ event.location.address }} <br /> <br />
+    {{ readableTime }} <br />
+    {{ event.sport.name }} <br />
+    {{ event.location.name }} - {{ event.location.address }} <br /> <br />
     <div v-if="!event.attending">
       <button class="btn btn-info recolor bold" v-on:click="signUp(event.id)">Sign
         up</button>
@@ -143,11 +163,12 @@ export default {
       <p class="bold">You're going! <br /> </p>
       <button v-if="!onCalendar" class="btn btn-info recolor bold" v-on:click='getToken'>Add event to google
         calendar</button> <small v-else>Event added to calendar!</small>
+      <button class="btn btn-secondary bold" v-if="OAuthToken" v-on:click="revokeToken">revoke google
+        token</button>
       <br />
       <small>can't make it? -> <button class="btn btn-secondary transparent" v-on:click="deleteParticipant">unsign
           up</button></small>
       <br /><br />
-      <button v-on:click="revokeToken">revoke token</button>
     </div> <br />
     <a v-if="event.edit_permission" v-bind:href="`/events/${event.id}/edit`">Edit Event</a>
   </div>
