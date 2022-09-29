@@ -44,9 +44,16 @@ export default {
         document.querySelector("#error").showModal()
       })
     },
-    requestOAuthPermission: function () {
-      console.log("redirecting to Google OAuth 2.0 server")
-
+    humanReadableTime: function (parsedTime) {
+      if (parsedTime[4].slice(0, -3).split(':')[0] > 12) {
+        return `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${parsedTime[4].slice(0, -3).split(':')[0] - 12}:${parsedTime[4].slice(0, -3).split(':')[1]} PM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
+      }
+      else if (parsedTime[4].slice(0, -3).split(':')[0] == 12) {
+        return `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${parsedTime[4].slice(0, -3)} PM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
+      }
+      else {
+        return `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${parsedTime[4].slice(0, -3).slice(1)} AM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
+      }
     }
   },
 };
@@ -58,7 +65,8 @@ export default {
     <h1 id="customH1">{{ message }}</h1>
     <div v-for="(event, index) in events">
       <a v-bind:href="`/events/${event.id}`">
-        <div>Date: {{ event.time }} <br />
+        <div>
+          {{ humanReadableTime(new Date(event.time).toString().split(' ')) }} <br />
           Sport: {{ event.sport.name }} <br />
           Location: {{ event.location.name }} - {{ event.location.address }} <br /> <br />
         </div>
