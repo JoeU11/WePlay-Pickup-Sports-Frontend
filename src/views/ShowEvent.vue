@@ -169,8 +169,8 @@ export default {
       <small>can't make it? -> <button class="btn btn-secondary transparent" v-on:click="deleteParticipant">unsign
           up</button></small>
       <br /><br />
-      <p v-if="event.estimated > event.total_going">{{event.estimated}} players are expected to join!</p>
-      <p v-else>{{event.total_going}} players have signed up!</p>
+      <p v-if="event.estimated > event.total_going">{{event.estimated}} player(s) are expected to join!</p>
+      <p v-else>{{event.total_going}} player(s) have signed up!</p>
     </div> <br />
     <a v-if="event.edit_permission" v-bind:href="`/events/${event.id}/edit`">Edit Event</a>
   </div>

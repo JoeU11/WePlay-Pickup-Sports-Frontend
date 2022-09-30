@@ -98,7 +98,7 @@ export default {
           <label>Address:</label>
         </div>
         <div class="col align-left">
-          <input type="text" v-model="newUserParams.address" />
+          <input type="text" v-model="newUserParams.location" />
         </div>
         <br /> <br /><br />
         <div class="row">

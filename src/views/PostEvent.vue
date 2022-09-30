@@ -28,7 +28,7 @@ export default {
         .post("/events", this.newEvent)
         .then((response) => {
           console.log(response.data);
-          this.$router.push("/");
+          this.$router.push(`/events/${response.data.id}`);
         })
         .catch((error) => {
           this.errors = error.response.data.errors
