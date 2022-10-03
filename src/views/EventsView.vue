@@ -45,10 +45,11 @@ export default {
       })
     },
     humanReadableTime: function (parsedTime) {
-      if (parsedTime[4].slice(0, -3).split(':')[0] > 12) {
-        return `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${parsedTime[4].slice(0, -3).split(':')[0] - 12}:${parsedTime[4].slice(0, -3).split(':')[1]} PM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
+      var hour = parsedTime[4].slice(0, -3).split(':')[0]
+      if (hour > 12) {
+        return `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${hour - 12}:${parsedTime[4].slice(0, -3).split(':')[1]} PM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
       }
-      else if (parsedTime[4].slice(0, -3).split(':')[0] == 12) {
+      else if (hour == 12) {
         return `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${parsedTime[4].slice(0, -3)} PM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
       }
       else {

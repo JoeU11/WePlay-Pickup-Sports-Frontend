@@ -119,11 +119,6 @@ export default {
               Sport: {{ sport }} <br />
               Time: {{ newEvent.time }} <br />
               Location: {{ place }}
-
-              <!-- begin testing -->
-              <button v-on:click="updateTimeSlot">update time</button>
-
-              <!-- end testing -->
             </p>
           </div>
           <button class="btn btn-info recolor bold" v-on:click="postEvent">Add Event</button>
