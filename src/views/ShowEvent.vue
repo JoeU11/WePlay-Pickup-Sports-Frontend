@@ -50,20 +50,20 @@ export default {
       }
     },
     getCalendar: function () {
-      console.log("getting calendar")
+      // console.log("getting calendar")
       axios.get('https://www.googleapis.com/calendar/v3/calendars/primary/events/', { headers: { 'Authorization': `Bearer ${this.access_token}` } }).then(response => {
-        console.log(response)
+        // console.log(response)
       }).catch(error => {
-        console.log(error.response.data.error)
+        // console.log(error.response.data.error)
       })
     },
     addEventToCalendar: function () {
       axios.post('https://www.googleapis.com/calendar/v3/calendars/primary/events/', this.calendarEvent, {
         headers: { 'Authorization': `Bearer ${this.access_token}` }
       }).then(response => {
-        console.log(response)
+        // console.log(response)
       }).catch(error => {
-        console.log(error.response.data.error)
+        // console.log(error.response.data.error)
       })
     },
     revokeToken: function () {
@@ -71,35 +71,34 @@ export default {
       localStorage.removeItem("googleOAuthToken");
       this.OAuthToken = false
     },
-    humanReadableTime: function (time) {
-      var parsedTime = time.split(' ')
+    humanReadableTime: function (date) {
+      var parsedTime = date.split(' ')
       var hour = parsedTime[4].slice(0, -3).split(':')[0]
+      var time = ""
       if (hour > 12) {
-        this.readableTime = `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${hour - 12}:${parsedTime[4].slice(0, -3).split(':')[1]} PM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
+        time = `${hour - 12}:${parsedTime[4].slice(0, -3).split(':')[1]} PM`
       }
       else if (hour == 12) {
-        this.readableTime = `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${parsedTime[4].slice(0, -3)} PM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
+        time = `${hour}:${parsedTime[4].slice(0, -3)} PM`
       }
       else {
-        this.readableTime = `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${parsedTime[4].slice(0, -3).slice(1)} AM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
+        if (hour[0] === '0') { hour = hour.slice(1) }
+        time = `${hour}:${parsedTime[4].slice(0, -3).split(':')[1]} AM`
       }
+      this.readableTime = `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${time} ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
     },
     getEvent: function () {
-      console.log("getting events")
       axios.get(`http://localhost:3000/events/${this.$route.params.id}.json`).then(response => {
         this.event = response.data
-        console.log(response.data)
-        console.log(response.data.time)
-        console.log(new Date(response.data.time))
-        this.humanReadableTime(new Date(response.data.time).toString()) //new Date is giving incorrect day. 
+        // console.log(response.data)        
+        this.humanReadableTime(new Date(response.data.time).toString())
         this.calendarEvent = { 'summary': `WePlay Pickup ${this.event.sport.name}`, 'location': this.event.location.address, 'description': 'Pickup sports activity scheduled through the WePlay App', 'start': { 'dateTime': this.event.start }, 'end': { 'dateTime': this.event.end } }
       })
     },
     signUp: function (eventID) {
-      console.log("signing up to event " + eventID)
       this.newParticipant.event_id = eventID
       axios.post(`http://localhost:3000/event_participants.json`, this.newParticipant).then(response => {
-        console.log(this.newParticipant)
+        // console.log(this.newParticipant)
         this.event.attending = true
         this.event.event_participant = {}
         this.event.event_participant.id = response.data.id
@@ -109,9 +108,7 @@ export default {
       })
     },
     deleteParticipant: function () {
-      console.log("deleting participant")
       axios.delete(`/event_participants/${this.event.event_participant.id}`).then(response => {
-        console.log("registration cancelled")
         this.event.attending = false
       }).catch(error => {
         this.errors = error.response.data

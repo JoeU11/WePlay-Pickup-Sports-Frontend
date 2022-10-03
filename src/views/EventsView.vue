@@ -15,17 +15,15 @@ export default {
   },
   methods: {
     getEvents: function () {
-      console.log("getting events")
       axios.get('http://localhost:3000/events.json').then(response => {
         this.events = response.data
-        console.log(response.data)
+        // console.log(response.data)
       })
     },
     signUp: function (event, index) {
-      console.log("signing up to event " + event.id)
       this.newParticipant.event_id = event.id
       axios.post(`http://localhost:3000/event_participants.json`, this.newParticipant).then(response => {
-        console.log(this.newParticipant)
+        // console.log(this.newParticipant)
         this.events[index].attending = true
         this.events[index].event_participant = {}
         this.events[index].event_participant.id = response.data.id
@@ -35,9 +33,7 @@ export default {
       })
     },
     deleteParticipant: function (event, index) {
-      console.log("deleting participant")
       axios.delete(`/event_participants/${event.event_participant.id}`).then(response => {
-        console.log("registration cancelled")
         this.events[index].attending = false
       }).catch(error => {
         this.errors = error.response.data
@@ -46,15 +42,18 @@ export default {
     },
     humanReadableTime: function (parsedTime) {
       var hour = parsedTime[4].slice(0, -3).split(':')[0]
+      var time = ""
       if (hour > 12) {
-        return `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${hour - 12}:${parsedTime[4].slice(0, -3).split(':')[1]} PM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
+        time = `${hour - 12}:${parsedTime[4].slice(0, -3).split(':')[1]} PM`
       }
       else if (hour == 12) {
-        return `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${parsedTime[4].slice(0, -3)} PM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
+        time = `${hour}:${parsedTime[4].slice(0, -3)} PM`
       }
       else {
-        return `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${parsedTime[4].slice(0, -3).slice(1)} AM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
+        if (hour[0] === '0') { hour = hour.slice(1) }
+        time = `${hour}:${parsedTime[4].slice(0, -3).split(':')[1]} AM`
       }
+      return `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${time} ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
     }
   },
 };

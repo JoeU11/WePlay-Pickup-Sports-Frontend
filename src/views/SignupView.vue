@@ -19,7 +19,7 @@ export default {
       axios
         .post("/users", this.newUserParams)
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           this.$router.push("/login");
         })
         .catch((error) => {
@@ -33,7 +33,7 @@ export default {
             if ([this.morning, this.afternoon, this.evening][i]) {
               if (!this.newUserParams.preferredTimes.some(entry => entry.day === this.preferredDay && entry.time_slot === this.allTimes[i])) {
                 this.newUserParams.preferredTimes.push({ day: this.preferredDay, time_slot: this.allTimes[i] })
-                console.log(this.newUserParams.preferredTimes)
+                // console.log(this.newUserParams.preferredTimes)
               }
             }
           }
@@ -128,14 +128,12 @@ export default {
             <button class="btn btn-info recolor bold" v-on:click="addTime">Add Time(s)</button>
           </div>
           <div class="col-7">
-            <!-- put selected times preview and removal option here -->
             <h3>Selected Times:</h3>
             <p v-for="(time, index) in newUserParams.preferredTimes">
               {{time.day}} - {{time.time_slot}} <button class="btn btn-secondary bold"
                 v-on:click="newUserParams.preferredTimes.splice(index, 1)">remove</button>
             </p>
           </div>
-          <!-- end testing -->
         </div>
 
       </div>

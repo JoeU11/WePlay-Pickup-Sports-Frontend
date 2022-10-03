@@ -23,12 +23,11 @@ export default {
   },
   methods: {
     postEvent: function () {
-      console.log("creating event")
       this.updateTimeSlot()
       axios
         .post("/events", this.newEvent)
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           this.$router.push(`/events/${response.data.id}`);
         })
         .catch((error) => {
@@ -37,7 +36,6 @@ export default {
         });
     },
     getLocations: function () {
-      console.log("getting locations")
       axios.get("/locations").then(response => {
         this.locations = response.data
       })
@@ -51,13 +49,12 @@ export default {
         this.newEvent.time_slot = "afternoon"
       else if (hour >= 17 && hour <= 21)
         this.newEvent.time_slot = "evening"
-      console.log(this.newEvent.time_slot)
+      // console.log(this.newEvent.time_slot)
     },
     showNewPlace: function () {
       document.querySelector("#newPlace").showModal()
     },
     postLocation: function () {
-      console.log("adding place")
       axios.post("locations", this.newLocation).then(response => {
         this.newEvent.location_id = response.data.id
         this.place = response.data.name
@@ -65,7 +62,6 @@ export default {
       })
     },
     showAllLocations: function () {
-      console.log("showing all locations")
       document.querySelector("#allLocations").showModal()
     }
   },

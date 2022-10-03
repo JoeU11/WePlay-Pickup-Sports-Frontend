@@ -24,11 +24,10 @@ export default {
   },
   methods: {
     updateEvent: function () {
-      console.log("creating event")
       axios
         .patch(`/events/${this.$route.params.id}`, this.event)
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           this.$router.push(`/events/${this.event.id}`);
         })
         .catch((error) => {
@@ -37,27 +36,24 @@ export default {
         });
     },
     getLocations: function () {
-      console.log("getting locations")
       axios.get("/locations").then(response => {
         this.locations = response.data
       })
     },
     getEvent: function () {
-      console.log("getting events")
       axios.get(`http://localhost:3000/events/${this.$route.params.id}.json`).then(response => {
         this.event = response.data
         this.sport = response.data.sport.name
         this.place = response.data.location.name
-        console.log(response.data)
+        // console.log(response.data)
       })
     },
     showDelete: function () {
       document.querySelector("#remove").showModal()
     },
     deleteEvent: function () {
-      console.log("deleting event")
       axios.delete(`/events/${this.event.id}`).then(response => {
-        console.log(response.data)
+        // console.log(response.data)
         this.$router.push("/pickup-events")
       }).catch(error => {
         this.errors = error.response.data
@@ -68,7 +64,6 @@ export default {
       document.querySelector("#newPlace").showModal()
     },
     postLocation: function () {
-      console.log("adding place")
       axios.post("locations", this.newLocation).then(response => {
         this.newEvent.location_id = response.data.id
         this.place = response.data.name
@@ -76,7 +71,6 @@ export default {
       })
     },
     showAllLocations: function () {
-      console.log("showing all locations")
       document.querySelector("#allLocations").showModal()
     }
   },

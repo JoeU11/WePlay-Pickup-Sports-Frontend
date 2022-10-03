@@ -15,17 +15,15 @@ export default {
   },
   methods: {
     getEvents: function () {
-      console.log("getting events")
       axios.get('http://localhost:3000/events.json', { params: { myEvents: true } }).then(response => {
         this.events = response.data
-        console.log(response.data)
+        // console.log(response.data)
       })
     },
     signUp: function (event, index) {
-      console.log("signing up to event " + event.id)
       this.newParticipant.event_id = event.id
       axios.post(`http://localhost:3000/event_participants.json`, this.newParticipant).then(response => {
-        console.log(this.newParticipant)
+        // console.log(this.newParticipant)
         this.events[index].attending = true
         this.events[index].event_participant = {}
         this.events[index].event_participant.id = response.data.id
@@ -35,9 +33,7 @@ export default {
       })
     },
     deleteParticipant: function (event, index) {
-      console.log("deleting participant")
       axios.delete(`/event_participants/${event.event_participant.id}`).then(response => {
-        console.log("registration cancelled")
         this.events[index].attending = false
       }).catch(error => {
         this.errors = error.response.data
