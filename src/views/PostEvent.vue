@@ -11,7 +11,7 @@ export default {
     return {
       newEvent: {},
       errors: [],
-      newEvent: { sport_id: 0, location_id: 0 },
+      newEvent: { sport_id: 0, location_id: 0, time: "" },
       sport: "",
       locations: [],
       place: "",
@@ -24,6 +24,7 @@ export default {
   methods: {
     postEvent: function () {
       console.log("creating event")
+      this.updateTimeSlot()
       axios
         .post("/events", this.newEvent)
         .then((response) => {
@@ -40,6 +41,17 @@ export default {
       axios.get("/locations").then(response => {
         this.locations = response.data
       })
+    },
+    updateTimeSlot: function () {
+      var time = this.newEvent.time.toTimeString().split(' ')[0]
+      var hour = time.split(":")[0]
+      if (hour >= 7 && hour <= 12)
+        this.newEvent.time_slot = "morning"
+      else if (hour > 12 && hour < 17)
+        this.newEvent.time_slot = "afternoon"
+      else if (hour >= 17 && hour <= 21)
+        this.newEvent.time_slot = "evening"
+      console.log(this.newEvent.time_slot)
     },
     showNewPlace: function () {
       document.querySelector("#newPlace").showModal()
@@ -107,6 +119,11 @@ export default {
               Sport: {{ sport }} <br />
               Time: {{ newEvent.time }} <br />
               Location: {{ place }}
+
+              <!-- begin testing -->
+              <button v-on:click="updateTimeSlot">update time</button>
+
+              <!-- end testing -->
             </p>
           </div>
           <button class="btn btn-info recolor bold" v-on:click="postEvent">Add Event</button>

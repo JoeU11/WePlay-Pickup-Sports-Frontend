@@ -51,9 +51,6 @@ export default {
     this.getEvent();
     this.initClient();
   },
-  watch: {
-
-  },
   methods: {
     initClient: function () {
       this.client = google.accounts.oauth2.initTokenClient({
@@ -102,7 +99,7 @@ export default {
       this.OAuthToken = false
     },
     humanReadableTime: function (parsedTime) {
-      console.log(parsedTime[4].slice(0, -3).split(':')[0])
+      console.log(parsedTime)
       if (parsedTime[4].slice(0, -3).split(':')[0] > 12) {
         this.readableTime = `${parsedTime[0]}, ${parsedTime[1]} ${parsedTime[2]} ${parsedTime[4].slice(0, -3).split(':')[0] - 12}:${parsedTime[4].slice(0, -3).split(':')[1]} PM ${parsedTime[6]} ${parsedTime[7]} ${parsedTime[8]}`
       }
@@ -118,7 +115,9 @@ export default {
       axios.get(`http://localhost:3000/events/${this.$route.params.id}.json`).then(response => {
         this.event = response.data
         console.log(response.data)
-        this.humanReadableTime(new Date(response.data.time).toString().split(' '))
+        console.log(response.data.time)
+        console.log(new Date(response.data.time))
+        this.humanReadableTime(new Date(response.data.time).toString().split(' ')) //new Date is giving incorrect day. 
         this.calendarEvent = { 'summary': `WePlay Pickup ${this.event.sport.name}`, 'location': this.event.location.address, 'description': 'Pickup sports activity scheduled through the WePlay App', 'start': { 'dateTime': this.event.start }, 'end': { 'dateTime': this.event.end } }
       })
     },
@@ -168,10 +167,9 @@ export default {
       <br />
       <small>can't make it? -> <button class="btn btn-secondary transparent" v-on:click="deleteParticipant">unsign
           up</button></small>
-      <br /><br />
-      <p v-if="event.estimated > event.total_going">{{event.estimated}} player(s) are expected to join!</p>
-      <p v-else>{{event.total_going}} player(s) have signed up!</p>
     </div> <br />
+    <p v-if="event.estimated > event.total_going">{{event.estimated}} player(s) are expected to join!</p>
+    <p v-else>{{event.total_going}} player(s) have signed up!</p>
     <a v-if="event.edit_permission" v-bind:href="`/events/${event.id}/edit`">Edit Event</a>
   </div>
 
