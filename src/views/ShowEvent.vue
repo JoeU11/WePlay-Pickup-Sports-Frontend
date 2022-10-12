@@ -62,6 +62,7 @@ export default {
         headers: { 'Authorization': `Bearer ${this.access_token}` }
       }).then(response => {
         // console.log(response)
+        document.querySelector('#added').showModal()
       }).catch(error => {
         // console.log(error.response.data.error)
       })
@@ -112,7 +113,7 @@ export default {
         this.event.attending = false
       }).catch(error => {
         this.errors = error.response.data
-        document.querySelector("#error").showModal()
+        // document.querySelector("#error").showModal()
       })
     }
   },
@@ -151,6 +152,13 @@ export default {
       <button class="btn btn-warning bold">OK</button>
     </form>
   </dialog>
+
+  <dialog id="added">
+    <form class="white" method="dialog">
+      <p> Event added! </p>
+      <button class="btn btn-info recolor bold">OK</button>
+    </form>
+  </dialog>
 </template>
     
 <style>
@@ -175,5 +183,10 @@ a:hover {
 .transparent {
   background-color: transparent;
   border-color: transparent;
+}
+
+#added {
+  background-color: #241137;
+  color: azure;
 }
 </style>
